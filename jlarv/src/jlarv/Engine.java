@@ -69,7 +69,7 @@ public class Engine {
 	 * Priority works as the lowest value will be the first to update.
 	 * TODO: add javadoc parameters 
 	 */
-	public void addSystem(System system, Integer priority) {
+	public void addSystem(System system, int priority) {
 		// Bind the system
 		system.setEntityManager(entity_manager);
 		system.setGroupManager(group_manager);
@@ -82,7 +82,7 @@ public class Engine {
 	 * TODO javadocs
 	 */
 	
-	public void changeSystemPriority(System system, Integer new_priority) {
+	public void changeSystemPriority(System system, int new_priority) {
 		//TODO: search if system is inside the queue or not
 		systems.change(system, new_priority);
 	}
