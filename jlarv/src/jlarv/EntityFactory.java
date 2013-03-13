@@ -20,6 +20,29 @@ public abstract class EntityFactory {
 	private EntityManager entity_manager;
 	private GroupManager group_manager;
 	
+	/*
+	 * Getter methods.
+	 */
+	protected EntityManager getEntityManager() {
+		return entity_manager;
+	}
+	protected GroupManager getGroupManager() {
+		return group_manager;
+	}
+	
+	/*
+	 * Setter methods.
+	 * This methods are called from the engine whenever we add the
+	 * entity manager to it.
+	 */
+	protected void setEntityManager(EntityManager entity_manager) {
+		this.entity_manager = entity_manager;
+	}
+	protected void setGroupManager(GroupManager group_manager) {
+		this.group_manager = group_manager;
+	}
+	
+	
 	
 
 }

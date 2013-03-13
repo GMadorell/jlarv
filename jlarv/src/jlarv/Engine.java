@@ -31,8 +31,8 @@ public class Engine {
 		group_manager = new GroupManager();
 		
 		this.entity_factory = entity_factory;
-		this.entity_factory.bindToEntityManager(entity_manager);
-		this.entity_factory.bindToGroupManager(group_manager);
+		this.entity_factory.setEntityManager(entity_manager);
+		this.entity_factory.setGroupManager(group_manager);
 	}
 	
 	/**
@@ -71,9 +71,9 @@ public class Engine {
 	 */
 	public void addSystem(System system, Integer priority) {
 		// Bind the system
-		system.bindToEntityManager(entity_manager);
-		system.bindToGroupManager(group_manager);
-		system.bindToEntityFactory(entity_factory);
+		system.setEntityManager(entity_manager);
+		system.setGroupManager(group_manager);
+		system.setEntityFactory(entity_factory);
 		systems.add(system, priority); // Add the system to the priority queue
 	}
 	
