@@ -108,7 +108,8 @@ public class Engine {
 	/*
 	 * Empties the engine, setting every container to null so they can be 
 	 * garbage collected.
-	 * TODO: check against circular references that dodge garbage collection.
+	 * TODO: check against circular references
+	 *  that dodge garbage collection.
 	 */
 	public void clean() {
 		systems = null;
