@@ -16,7 +16,7 @@ public abstract class System {
 	private EntityFactory entity_factory;
 	private GroupManager group_manager;
 	
-	/*
+	/**
 	 * Getters and setters.
 	 * Setters will be called whenever a System is added into an Engine.
 	 */
@@ -40,7 +40,7 @@ public abstract class System {
 		this.group_manager = group_manager;
 	}
 	
-	/*
+	/**
 	 * Update method will be called from engine in every game tick.
 	 * It will iterate over entities and components and process them.
 	 */

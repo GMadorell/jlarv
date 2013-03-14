@@ -28,7 +28,7 @@ public class Engine {
 	public Engine(EntityFactory entity_factory) {
 		systems = new PriorityList();
 		entity_manager = new EntityManager();
-		group_manager = new GroupManager();
+		group_manager = new GroupManager(this);
 		
 		this.entity_factory = entity_factory;
 		this.entity_factory.setEntityManager(entity_manager);
@@ -41,7 +41,7 @@ public class Engine {
 	public Engine() {
 		systems = new PriorityList;
 		entity_manager = new EntityManager();
-		entity_factory = new EntityFactory();
+		group_manager = new GroupManager();
 	}
 
 	/*
@@ -63,7 +63,7 @@ public class Engine {
 		return entity_factory;
 	}
 	
-	/*
+	/**
 	 * Adds the given system to the priority queue using the given priority and also
 	 * binds the managers and the factory to it.
 	 * Priority works as the lowest value will be the first to update.
@@ -77,7 +77,7 @@ public class Engine {
 		systems.add(system, priority); // Add the system to the priority queue
 	}
 	
-	/*
+	/**
 	 * Changes the given system's priority so it updates after/before.
 	 * TODO javadocs
 	 */
@@ -88,7 +88,7 @@ public class Engine {
 	}
 	
 	
-	/*
+	/**
 	 * Removes the given system from the priority queue.
 	 * TODO javadocs
 	 */
@@ -96,7 +96,7 @@ public class Engine {
 		systems.remove(system);
 	}
 	
-	/*
+	/**
 	 * Updates every system in priority order.
 	 */
 	public void update() {
@@ -105,7 +105,7 @@ public class Engine {
 		}
 	}
 	
-	/*
+	/**
 	 * Empties the engine, setting every container to null so they can be 
 	 * garbage collected.
 	 * TODO: check against circular references
