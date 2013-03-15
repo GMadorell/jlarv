@@ -18,10 +18,10 @@ import java.util.*;
  */
 public class EntityManager {	
 	private ArrayList<Integer> entities;
-	// Map components using a double map.
-	// String = Component name.
-	// Integer = Entity.
-	// Component = the Component instance associated to that entity
+	/* Map components using a double map of structure:
+	     - String = Component name.
+	  	 - Integer = Entity unique ID.
+	  	 - Component = the Component associated to that entity.*/
 	private HashMap<String, HashMap<Integer, Component>> components_by_class;
 	private int lowest_assigned_id;
 	
@@ -57,7 +57,122 @@ public class EntityManager {
 		return new_id;
 	}
 	
+	/**
+	 * Removes the given entity from the entity manager (completely).
+	 * @param entity The entity which will be erased.
+	 */
+	public void removeEntity(int entity) {
+		for(HashMap<Integer, Component> value : components_by_class.values()) {
+			value.remove(entity);
+		}
+	}
 	
+	/**
+	 * Adds the given component to the given entity.
+	 * Overrides the actual component if a new one is passed.
+	 */
+	public void addComponent(int entity, Component component) {
+		String component_name = component.getClass().getName();	
+		if (components_by_class.containsKey(component_name)) {
+			HashMap<Integer, Component> entity_map = components_by_class.get(component_name);
+			entity_map.put(entity, component);
+		}
+		else {
+			HashMap<Integer, Component> entity_map = new HashMap<Integer, Component>();
+			entity_map.put(entity, component);
+			components_by_class.put(component_name, entity_map);
+		}
+	}
 	
+	/**
+	 * Removes the given component from the given entity.
+	 */
+	public void removeComponent(int entity, Component component) {
+		String component_name = component.getClass().getName();
+		if (components_by_class.containsKey(component_name)) {
+			//TODO test what happens when we try to remove a component that isn't linked to given entity.
+			components_by_class.get(component_name).remove(entity);  
+		}
+	}
 	
+	/**
+	 * Returns a boolean depending on whether the given entity has the given component or not.
+	 */
+	public boolean hasComponent(int entity, Component component) {
+		String component_name = component.getClass().getName();
+		if (!components_by_class.containsKey(component_name))
+			return false;
+		if (!components_by_class.get(component_name).containsKey(entity))
+			return false;
+		return true;
+	}
+	
+	/**
+	 * Given an entity and a component, returns the component if the entity has it.
+	 */
+	public Component getComponent(int entity, Component component) {
+		String component_name = component.getClass().getName();
+		//TODO test what happens when we try to get a component that isn't linked to given entity.
+		return components_by_class.get(component_name).get(entity);
+	}
+	
+	/**
+	 * Returns a list of all the entities that have the given component.
+	 */
+	public ArrayList<Integer> getEntitiesHavingComponent(Component component) {
+		String component_name = component.getClass().getName();
+		ArrayList<Integer> entities_list = new ArrayList<Integer>();
+		for (int entity : components_by_class.get(component_name).keySet()) {
+			entities_list.add(entity);
+		}
+		return entities_list;
+	}
+	
+	/**
+	 * Returns a list of all the entities that have all the given components.
+	 * It's a exclusive method, meaning that it does an intersection, returning
+	 * only the entities that have every single component.
+	 */
+	public ArrayList<Integer> getEntitiesHavingComponents(Component ... components) {
+		ArrayList<Integer> entities_list = getEntitiesHavingComponent(components[0]); //avoid 1 iteration
+		ArrayList<Integer> auxiliar_list = new ArrayList<Integer>();
+		Component component;
+		// Iterate over the arguments
+		for (int i = 1; i < components.length; i++) {
+			component = components[i];
+			auxiliar_list = getEntitiesHavingComponent(component);
+			// Intersection
+			for (int entity : entities_list) {
+				if (!auxiliar_list.contains(entity)) {
+					entities_list.remove(entity);
+				}
+			}			
+		}
+		return entities_list;		
+	}
+	
+	/**
+	 * Returns a list of all the components that the given entity has at the moment.
+	 */
+	public ArrayList<Component> getComponentsOfEntity(int entity) {
+		ArrayList<Component> components_list = new ArrayList<Component>();
+		for (HashMap<Integer, Component> entities_map : components_by_class.values()) {
+			if (entities_map.containsKey(entity)) {
+				components_list.add(entities_map.get(entity));
+			}
+		}
+		return components_list;
+ 	}
+	
+	/**
+	 * Returns a list of all the components of the type given. 
+	 */
+	public ArrayList<Component> getComponentsOfType(Component component) {
+		ArrayList<Component> components_list = new ArrayList<Component>();
+		String component_name = component.getClass().getName();
+		for (Component component_inside : components_by_class.get(component_name).values()) {
+			components_list.add(component_inside);
+		}
+		return components_list;
+	}	
 }
