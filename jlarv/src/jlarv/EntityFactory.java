@@ -32,7 +32,7 @@ public abstract class EntityFactory {
 	
 	/*
 	 * Setter methods.
-	 * This methods are called from the engine whenever we add the
+	 * This methods are called from the engine automatically whenever we add the
 	 * entity manager to it.
 	 */
 	protected void setEntityManager(EntityManager entity_manager) {

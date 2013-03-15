@@ -30,9 +30,7 @@ public class Engine {
 		entity_manager = new EntityManager();
 		group_manager = new GroupManager(this);
 		
-		this.entity_factory = entity_factory;
-		this.entity_factory.setEntityManager(entity_manager);
-		this.entity_factory.setGroupManager(group_manager);
+		setEntityFactory(entity_factory);
 	}
 	
 	/**
@@ -64,6 +62,16 @@ public class Engine {
 	}
 	
 	/**
+	 * Setter for the entity factory, also binds it to the entity manager and the
+	 * group manager.
+	 */
+	protected void setEntityFactory(EntityFactory entity_factory) {
+		this.entity_factory = entity_factory;
+		this.entity_factory.setEntityManager(entity_manager);
+		this.entity_factory.setGroupManager(group_manager);
+	}
+	
+	/**
 	 * Adds the given system to the priority queue using the given priority and also
 	 * binds the managers and the factory to it.
 	 * Priority works as the lowest value will be the first to update.
@@ -80,8 +88,7 @@ public class Engine {
 	/**
 	 * Changes the given system's priority so it updates after/before.
 	 * TODO javadocs
-	 */
-	
+	 */	
 	public void changeSystemPriority(System system, int new_priority) {
 		//TODO: search if system is inside the queue or not
 		systems.change(system, new_priority);

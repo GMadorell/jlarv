@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 /*
- 	Allows entities to be added into groups to be fetched later on.
+	Allows entities to be added into groups to be fetched later on.
     For example, we could have a group called 'hero' and add the hero to it,
     and then we could fetch for all the entities that are from the 'hero'
     group, getting only the hero, obviously.
