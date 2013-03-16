@@ -11,12 +11,12 @@ public class ClassUtils {
 	 * @return The name of the class.
 	 */
 	public static String getClassName(@SuppressWarnings("rawtypes") Class c) {
-		String FQClassName = c.getName();
-		int firstChar;
-		firstChar = FQClassName.lastIndexOf ('.') + 1;
-		if ( firstChar > 0 ) {
-			FQClassName = FQClassName.substring ( firstChar );
+		String class_name = c.getName();
+		int first_char;
+		first_char = class_name.lastIndexOf ('.') + 1;
+		if (first_char > 0 ) {
+			class_name = class_name.substring(first_char);
 		}
-		return FQClassName;
+		return class_name;
     }
 }
