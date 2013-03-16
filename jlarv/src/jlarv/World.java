@@ -71,6 +71,7 @@ public class World {
 			
 			function.call(args);
 		}
+		postupdate_functions.clear();
 	}
 	
 	/**
