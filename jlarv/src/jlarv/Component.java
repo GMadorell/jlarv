@@ -13,5 +13,10 @@ package jlarv;
   Logic is 100% done by the Systems.  
  */
 public abstract class Component {
-
+	
+	//TODO: this should be static (so we can say MoveComponent.getName()), 
+	//       but have no idea how to do it
+	public String getName() {
+		return this.getClass().getSimpleName();
+	}
 }
