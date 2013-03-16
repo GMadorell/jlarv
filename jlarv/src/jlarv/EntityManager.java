@@ -138,7 +138,7 @@ public class EntityManager {
 		ArrayList<Integer> auxiliar_list = new ArrayList<Integer>();
 		Component component;
 		// Iterate over the arguments
-		for (int i = 1; i < components.length; i++) {
+		for (int i = 1, len = components.length; i < len; i++) {
 			component = components[i];
 			auxiliar_list = getEntitiesHavingComponent(component);
 			// Intersection
