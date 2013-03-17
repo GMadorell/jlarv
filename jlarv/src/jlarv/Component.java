@@ -12,7 +12,7 @@ package jlarv;
   and/or access the data, but can't have any logic around it.
   Logic is 100% done by the Systems.  
  */
-public abstract class Component {
+public class Component {
 	
 	//TODO: this should be static (so we can say MoveComponent.getName()), 
 	//       but have no idea how to do it

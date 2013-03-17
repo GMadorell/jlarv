@@ -16,7 +16,7 @@ import java.util.*;
           that, 2nd dictionary value should be a list instead of a single component.
 
  */
-public class EntityManager {	
+public class EntityManager {
 	private ArrayList<Integer> entities;
 	/* Map components using a double map of structure:
 	     - String = Component name.
