@@ -37,8 +37,8 @@ public class World {
 	 * Adds the given Engine to the engine stack, giving it instant priority
 	 * when updating.
 	 */
-	public void push(Engine engine) {
-		engine_stack.push(engine);
+	public void push( Engine engine ) {
+		engine_stack.push( engine );
 	}
 	
 	/**
@@ -52,9 +52,9 @@ public class World {
 	 * Exchanges the actual engine for the given engine.
 	 * @return the last active engine.
 	 */
-	public Engine exchange(Engine engine) {
+	public Engine exchange( Engine engine ) {
 		Engine popped = this.pop();
-		push(engine);
+		push( engine );
 		return popped;		
 	}
 	
@@ -63,14 +63,14 @@ public class World {
 	 * Also calls any post update function and resets the post update functions list.
 	 * @param delta The time elapsed since the last update.
 	 */
-	public void update(float delta) {
-		engine_stack.peek().update(delta);
+	public void update( float delta ) {
+		engine_stack.peek().update( delta );
 		
-		for (Tuple tuple : postupdate_functions) {
-			Callable function = tuple.getNthValue(0);
-			ArrayList<Object> args = tuple.getNthValue(1);
+		for ( Tuple tuple : postupdate_functions ) {
+			Callable function = tuple.getNthValue( 0 );
+			ArrayList<Object> args = tuple.getNthValue( 1 );
 			
-			function.call(args);
+			function.call( args );
 		}
 		postupdate_functions.clear();
 	}
@@ -80,8 +80,8 @@ public class World {
 	 * @param func - the function we want to call
 	 * @param args - array list with the arguments we want to use in the function
 	 */
-	public void addPostUpdateFunction(Callable func, ArrayList<Object> args) {
-		final Tuple tuple = functionArgsTupleType.createTuple(func, args);
-		postupdate_functions.add(tuple);
+	public void addPostUpdateFunction( Callable func, ArrayList<Object> args ) {
+		final Tuple tuple = functionArgsTupleType.createTuple( func, args );
+		postupdate_functions.add( tuple );
 	}
 }

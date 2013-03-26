@@ -12,12 +12,12 @@ package jlarv;
   */
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 public abstract class System implements Comparable<System> {
-	private EntityManager entity_manager;
-	private EntityFactory entity_factory;
-	private GroupManager group_manager;
-	private int priority;
+	private EntityManager  entity_manager;
+	private EntityFactory  entity_factory;
+	private GroupManager   group_manager;
+	private int 		    priority;
 	
-	public System (int priority) {
+	public System ( int priority ) {
 		this.priority = priority;
 	}
 	public System () {
@@ -40,16 +40,16 @@ public abstract class System implements Comparable<System> {
 		return priority;
 	}
 	
-	protected void setEntityManager(EntityManager entity_manager) {
+	protected void setEntityManager( EntityManager entity_manager ) {
 		this.entity_manager = entity_manager;
 	}
-	protected void setEntityFactory(EntityFactory entity_factory) {
+	protected void setEntityFactory( EntityFactory entity_factory ) {
 		this.entity_factory = entity_factory;
 	}
-	protected void setGroupManager(GroupManager group_manager) {
+	protected void setGroupManager( GroupManager group_manager ) {
 		this.group_manager = group_manager;
 	}
-	protected void setPriority (int priority) {
+	protected void setPriority ( int priority ) {
 		this.priority = priority;
 	}
 	
@@ -57,25 +57,20 @@ public abstract class System implements Comparable<System> {
 	 * Update method will be called from engine in every game tick.
 	 * It will iterate over entities and components and process them.
 	 */
-	public abstract void update(float delta);
+	public abstract void update( float delta );
 	
 	/**
 	 * Implement Comparator interface.
-	 * This method returns -1 if this system is lower than the other system,
-	 * 0 if they're equal and 1 if this system is greater than the given
-	 * one.
 	 * Allows us to iterate over the systems in priority order.
 	 * The system with the lower priority will be the first to update.
 	 */
 	@Override 
-	public final int compareTo(System other) {
-		if (this.priority < other.priority) {
+	public final int compareTo( System other ) {
+		if ( this.priority < other.priority ) {
 			return -1;
-		}
-		else if(this.priority == other.priority) {
+		} else if ( this.priority == other.priority ) {
 			return 0;
-		}
-		else {
+		} else {
 			return 1;
 		}
 	}

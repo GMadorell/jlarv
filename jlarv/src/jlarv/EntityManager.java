@@ -53,7 +53,7 @@ public class EntityManager {
 	 */
 	public int createEntity() {
 		int new_id = generateNewId();
-		entities.add(new_id);
+		entities.add( new_id );
 		return new_id;
 	}
 	
@@ -61,10 +61,10 @@ public class EntityManager {
 	 * Removes the given entity from the entity manager (completely).
 	 * @param entity The entity which will be erased.
 	 */
-	public void removeEntity(int entity) {
+	public void removeEntity( int entity ) {
 		for(HashMap<Integer, Component> value : components_by_class.values()) {
-			value.remove(entity);
-			entities.remove(entity);
+			value.remove( entity );
+			entities.remove( entity );
 		}
 	}
 	
@@ -72,16 +72,15 @@ public class EntityManager {
 	 * Adds the given component to the given entity.
 	 * Overrides the actual component if a new one is passed.
 	 */
-	public void addComponent(int entity, Component component) {
+	public void addComponent( int entity, Component component ) {
 		String component_name = component.getClass().getSimpleName();	
-		if (components_by_class.containsKey(component_name)) {
-			HashMap<Integer, Component> entity_map = components_by_class.get(component_name);
-			entity_map.put(entity, component);
-		}
-		else {
+		if ( components_by_class.containsKey( component_name ) ) {
+			HashMap<Integer, Component> entity_map = components_by_class.get( component_name );
+			entity_map.put( entity, component );
+		} else {
 			HashMap<Integer, Component> entity_map = new HashMap<Integer, Component>();
-			entity_map.put(entity, component);
-			components_by_class.put(component_name, entity_map);
+			entity_map.put( entity, component );
+			components_by_class.put( component_name, entity_map );
 		}
 	}
 	
@@ -101,12 +100,12 @@ public class EntityManager {
 	 * You can use removeComponentSafe if that's a problem.
 	 * @param component_name The class name of the component we want to remove.
 	 */
-	public void removeComponent(int entity, String component_name) {
-		components_by_class.get(component_name).remove(entity); 
+	public void removeComponent( int entity, String component_name ) {
+		components_by_class.get( component_name ).remove( entity ); 
 	}
-	public void removeComponentSafe(int entity, String component_name) {
-		if (components_by_class.containsKey(component_name)) {
-			components_by_class.get(component_name).remove(entity);  
+	public void removeComponentSafe( int entity, String component_name ) {
+		if ( components_by_class.containsKey( component_name ) ) {
+			components_by_class.get( component_name ).remove( entity );  
 		}
 	}
 	
@@ -114,18 +113,18 @@ public class EntityManager {
 	 * Returns a boolean depending on whether the given entity has the given component or not.
 	 * @param component_name The class name of the component we want to check.
 	 */
-	public boolean hasComponent(int entity, String component_name) {
-		if (!components_by_class.containsKey(component_name))
+	public boolean hasComponent( int entity, String component_name ) {
+		if (!components_by_class.containsKey( component_name ) )
 			return false;
-		return components_by_class.get(component_name).containsKey(entity);
+		return components_by_class.get( component_name ).containsKey( entity );
 	}
 	
 	/**
 	 * Returns a boolean depending on whether the given component name was ever introduced
 	 * to the manager (added at least once).
 	 */
-	public boolean doesComponentExist(String component_name) {
-		return components_by_class.containsKey(component_name);
+	public boolean doesComponentExist( String component_name ) {
+		return components_by_class.containsKey( component_name );
 	}
 	
 	/**
@@ -134,8 +133,8 @@ public class EntityManager {
 	 * If you're really unsure about that possibility, perhaps using hasComponent might be a good idea.
 	 * @param component_name The class name of the component we want to retrieve.
 	 */
-	public Component getComponent(int entity, String component_name) {
-		return components_by_class.get(component_name).get(entity);
+	public Component getComponent( int entity, String component_name ) {
+		return components_by_class.get( component_name ).get( entity );
 	}
 	
 	/**
@@ -144,10 +143,10 @@ public class EntityManager {
 	 * to the manager. If that really bothers you, you can try to use doesComponentExist().
 	 * @param component_name The class name of the component we want to process.
 	 */
-	public ArrayList<Integer> getEntitiesHavingComponent(String component_name) {
+	public ArrayList<Integer> getEntitiesHavingComponent( String component_name ) {
 		ArrayList<Integer> entities_list = new ArrayList<Integer>();
-		for (int entity : components_by_class.get(component_name).keySet()) {
-			entities_list.add(entity);
+		for ( int entity : components_by_class.get( component_name ).keySet() ) {
+			entities_list.add( entity );
 		}
 		return entities_list;
 	}
@@ -158,20 +157,20 @@ public class EntityManager {
 	 * only the entities that have every single component.
 	 * @param components The class name of the components we want to process.
 	 */
-	public ArrayList<Integer> getEntitiesHavingComponents(String ... components) {
-		ArrayList<Integer> entities_list = getEntitiesHavingComponent(components[0]); //avoid 1 iteration
+	public ArrayList<Integer> getEntitiesHavingComponents( String ... components ) {
+		ArrayList<Integer> entities_list = getEntitiesHavingComponent( components[0] ); //avoid 1 iteration
 		ArrayList<Integer> auxiliar_list = new ArrayList<Integer>();
 		String component_name;
 		int entity;
 		// Iterate over the arguments
-		for (int i = 1, len = components.length; i < len; i++) {
+		for ( int i = 1, len = components.length; i < len; i++ ) {
 			component_name = components[i];
-			auxiliar_list = getEntitiesHavingComponent(component_name);
+			auxiliar_list = getEntitiesHavingComponent( component_name );
 			// Intersection - We must traverse list in inverse order to evade ConcurrentModificationException		
-			for (int j = entities_list.size()-1; j >= 0; j--) {
-				entity = entities_list.get(j);
-				if (!auxiliar_list.contains(entity)) {
-					entities_list.remove(j);
+			for ( int j = entities_list.size()-1; j >= 0; j-- ) {
+				entity = entities_list.get( j );
+				if ( ! auxiliar_list.contains( entity ) ) {
+					entities_list.remove( j );
 				}
 			}
 		}
@@ -181,11 +180,11 @@ public class EntityManager {
 	/**
 	 * Returns a list of all the components that the given entity has at the moment.
 	 */
-	public ArrayList<Component> getComponentsOfEntity(int entity) {
+	public ArrayList<Component> getComponentsOfEntity( int entity ) {
 		ArrayList<Component> components_list = new ArrayList<Component>();
-		for (HashMap<Integer, Component> entities_map : components_by_class.values()) {
-			if (entities_map.containsKey(entity)) {
-				components_list.add(entities_map.get(entity));
+		for ( HashMap<Integer, Component> entities_map : components_by_class.values() ) {
+			if ( entities_map.containsKey( entity ) ) {
+				components_list.add( entities_map.get( entity ) );
 			}
 		}
 		return components_list;
@@ -196,10 +195,10 @@ public class EntityManager {
 	 * Fails (on purpose) if the component name isn't even on the dictionary.
 	 * @param component_name The class name of the component we want to process.
 	 */
-	public ArrayList<Component> getComponentsOfType(String component_name) {
+	public ArrayList<Component> getComponentsOfType( String component_name ) {
 		ArrayList<Component> components_list = new ArrayList<Component>();
-		for (Component component_inside : components_by_class.get(component_name).values()) {
-			components_list.add(component_inside);
+		for ( Component component_inside : components_by_class.get( component_name ).values() ) {
+			components_list.add( component_inside );
 		}
 		return components_list;
 	}	

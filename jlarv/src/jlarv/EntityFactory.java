@@ -17,8 +17,8 @@ package jlarv;
       instance, so you will need to create it before the engine.
  */
 public abstract class EntityFactory {
-	private EntityManager entity_manager;
-	private GroupManager group_manager;
+	private EntityManager  entity_manager;
+	private GroupManager   group_manager;
 	
 	/*
 	 * Getter methods.
@@ -35,10 +35,10 @@ public abstract class EntityFactory {
 	 * This methods are called from the engine automatically whenever we add the
 	 * entity manager to it.
 	 */
-	protected void setEntityManager(EntityManager entity_manager) {
+	protected void setEntityManager( EntityManager entity_manager ) {
 		this.entity_manager = entity_manager;
 	}
-	protected void setGroupManager(GroupManager group_manager) {
+	protected void setGroupManager( GroupManager group_manager ) {
 		this.group_manager = group_manager;
 	}
 	
