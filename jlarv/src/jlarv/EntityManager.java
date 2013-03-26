@@ -86,6 +86,15 @@ public class EntityManager {
 	}
 	
 	/**
+	 * Adds all the given components to the given entity.
+	 * Overrides the anterior components if they existed.
+	 */
+	public void addComponents( int entity, Component ... components ) {
+		for ( Component component : components ) {
+			addComponent( entity, component );
+		}
+	}
+	/**
 	 * Removes the given component from the given entity.
 	 * It fails (on purpose) if the component was never added to the entity manager,
 	 * that helps debugging in some cases.
