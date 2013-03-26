@@ -57,14 +57,14 @@ public abstract class System implements Comparable<System> {
 	 * Update method will be called from engine in every game tick.
 	 * It will iterate over entities and components and process them.
 	 */
-	public abstract void update();
+	public abstract void update(float delta);
 	
 	/**
 	 * Implement Comparator interface.
 	 * This method returns -1 if this system is lower than the other system,
 	 * 0 if they're equal and 1 if this system is greater than the given
 	 * one.
-	 * This allows us to iterate over the systems in priority order.
+	 * Allows us to iterate over the systems in priority order.
 	 * The system with the lower priority will be the first to update.
 	 */
 	@Override 

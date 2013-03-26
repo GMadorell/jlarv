@@ -108,10 +108,11 @@ public class Engine {
 	
 	/**
 	 * Updates every system in priority order.
+	 * @param delta The time elapsed since last update step.
 	 */
-	public void update() {
+	public void update(float delta) {
 		for (System system : systems) {
-			system.update();
+			system.update(delta);
 		}
 	}
 	

@@ -61,9 +61,10 @@ public class World {
 	/**
 	 * Updates only the system on top of the stack.
 	 * Also calls any post update function and resets the post update functions list.
+	 * @param delta The time elapsed since the last update.
 	 */
-	public void update() {
-		engine_stack.peek().update();
+	public void update(float delta) {
+		engine_stack.peek().update(delta);
 		
 		for (Tuple tuple : postupdate_functions) {
 			Callable function = tuple.getNthValue(0);
