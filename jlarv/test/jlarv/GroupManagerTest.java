@@ -3,8 +3,6 @@ package jlarv;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-
 import org.junit.Test;
 
 /**

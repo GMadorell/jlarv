@@ -6,9 +6,10 @@ import org.junit.Test;
 
 public class EntityFactoryTest {
 
-//	@Test
-//	public void test() {
-//		fail("Not yet implemented");
-//	}
+	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
+
 
 }
