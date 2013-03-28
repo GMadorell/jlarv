@@ -30,14 +30,6 @@ public class EntityManager {
 		entities = new ArrayList<Integer>();
 		lowest_assigned_id = 0;
 	}
-
-	protected ArrayList<Integer> getEntities() {
-		return entities;
-	}
-
-	protected HashMap<String, HashMap<Integer, Component>> getComponentsByClass() {
-		return components_by_class;
-	}
 	
 	/**
 	 * Generates a new unique id used for assigning it to a entity.
@@ -202,4 +194,15 @@ public class EntityManager {
 		}
 		return components_list;
 	}	
+	
+	/*
+	 * Getters and setters.
+	 */
+	public ArrayList<Integer> getEntities() {
+		return entities;
+	}
+
+	public HashMap<String, HashMap<Integer, Component>> getComponentsByClass() {
+		return components_by_class;
+	}
 }

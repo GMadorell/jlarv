@@ -43,16 +43,6 @@ public class Engine {
 	}	
 	
 	/**
-	 * Setter for the entity factory, also binds it to the entity manager and the
-	 * group manager.
-	 */
-	protected void setEntityFactory( EntityFactory entity_factory ) {
-		this.entity_factory = entity_factory;
-		this.entity_factory.setEntityManager( entity_manager );
-		this.entity_factory.setGroupManager( group_manager );
-	}
-	
-	/**
 	 * Adds the given system to the priority queue using the given priority and also
 	 * binds the managers and the factory to it.
 	 * Priority works as the lowest value will be the first to update.
@@ -112,19 +102,29 @@ public class Engine {
 	/*
 	 * Getter methods.
 	 */
-	protected PriorityQueue<System> getSystems() {
+	public PriorityQueue<System> getSystems() {
 		return systems;
 	}
 
-	protected EntityManager getEntityManager() {
+	public EntityManager getEntityManager() {
 		return entity_manager;
 	}
 
-	protected GroupManager getGroupManager() {
+	public GroupManager getGroupManager() {
 		return group_manager;
 	}
 
-	protected EntityFactory getEntityFactory() {
+	public EntityFactory getEntityFactory() {
 		return entity_factory;
+	}
+	
+	/**
+	 * Setter for the entity factory, also binds it to the entity manager and the
+	 * group manager.
+	 */
+	public void setEntityFactory( EntityFactory entity_factory ) {
+		this.entity_factory = entity_factory;
+		this.entity_factory.setEntityManager( entity_manager );
+		this.entity_factory.setGroupManager( group_manager );
 	}
 }

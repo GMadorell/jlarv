@@ -133,13 +133,13 @@ public class GroupManager {
 	/*
 	 * Getters and setters.
 	 */
-	protected HashMap<String, ArrayList<Integer>> getEntitiesByGroup() {
+	public HashMap<String, ArrayList<Integer>> getEntitiesByGroup() {
 		return entities_by_group;
 	}
-	protected Engine getEngine() {
+	public Engine getEngine() {
 		return engine;
 	}	
-	protected void setEngine( Engine engine ) {
+	public void setEngine( Engine engine ) {
 		this.engine = engine;
 	}
 

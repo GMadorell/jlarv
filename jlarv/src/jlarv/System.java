@@ -27,29 +27,29 @@ public abstract class System implements Comparable<System> {
 	 * Getters and setters.
 	 * Setters will be called whenever a System is added into an Engine.
 	 */
-	protected EntityManager getEntityManager() {
+	public EntityManager getEntityManager() {
 		return entity_manager;
 	}	
-	protected EntityFactory getEntityFactory() {
+	public EntityFactory getEntityFactory() {
 		return entity_factory;
 	}	
-	protected GroupManager getGroupManager() {
+	public GroupManager getGroupManager() {
 		return group_manager;
 	}
-	protected int getPriority() {
+	public int getPriority() {
 		return priority;
 	}
 	
-	protected void setEntityManager( EntityManager entity_manager ) {
+	public void setEntityManager( EntityManager entity_manager ) {
 		this.entity_manager = entity_manager;
 	}
-	protected void setEntityFactory( EntityFactory entity_factory ) {
+	public void setEntityFactory( EntityFactory entity_factory ) {
 		this.entity_factory = entity_factory;
 	}
-	protected void setGroupManager( GroupManager group_manager ) {
+	public void setGroupManager( GroupManager group_manager ) {
 		this.group_manager = group_manager;
 	}
-	protected void setPriority ( int priority ) {
+	public void setPriority ( int priority ) {
 		this.priority = priority;
 	}
 	
