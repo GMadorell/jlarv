@@ -1,6 +1,8 @@
 package jlarv;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashMap;
 /*
  	EntityManager is a object that acts as the 'database' of the system.
     It's used for looking up entities, getting their list of components, creating
@@ -17,18 +19,26 @@ import java.util.*;
 
  */
 public class EntityManager {
+    /* Holds all the active entities */
 	private ArrayList<Integer> entities;
+	
 	/* Map components using a double map of structure:
 	     - String = Component name.
 	  	 - Integer = Entity unique ID.
 	  	 - Component = the Component associated to that entity.*/
-	private HashMap<String, HashMap<Integer, Component>> components_by_class;
-	private int lowest_assigned_id;
+	private HashMap<String, HashMap<Integer, Component>> componentsByClass;
+	
+	/* Serves the purpose of never having two entities with the same ID (much like a database primary key) */
+	private int lowestAssignedId;
+	
+	/* Allows to recycle the IDs after entities have been deleted from the entity manager */
+	private ArrayDeque<Integer> unassignedIDs;
 	
 	public EntityManager() {
-		components_by_class = new HashMap<String, HashMap<Integer, Component>>();
+		componentsByClass = new HashMap<String, HashMap<Integer, Component>>();
 		entities = new ArrayList<Integer>();
-		lowest_assigned_id = 0;
+		lowestAssignedId = 0;
+		unassignedIDs = new ArrayDeque<Integer>();
 	}
 	
 	/**
@@ -36,7 +46,11 @@ public class EntityManager {
 	 * @return New unique ID (int).
 	 */
 	private int generateNewId() {
-		return lowest_assigned_id++;
+	    if ( unassignedIDs.size() > 0 ) {
+	        return unassignedIDs.pop();
+	    } else {
+	        return lowestAssignedId++;
+	    }
 	}
 	
 	/**
@@ -54,25 +68,27 @@ public class EntityManager {
 	 * @param entity The entity which will be erased.
 	 */
 	public void removeEntity( int entity ) {
-		for(HashMap<Integer, Component> value : components_by_class.values()) {
+		for ( HashMap<Integer, Component> value : componentsByClass.values() ) {
 			value.remove( entity );
 			entities.remove( entity );
+			// Add it's ID to be recycled later on
+			unassignedIDs.push(entity);
 		}
 	}
 	
 	/**
 	 * Adds the given component to the given entity.
-	 * Overrides the actual component if a new one is passed.
+	 * Overrides the actual component if a new one is given.
 	 */
 	public void addComponent( int entity, Component component ) {
 		String component_name = component.getClass().getSimpleName();	
-		if ( components_by_class.containsKey( component_name ) ) {
-			HashMap<Integer, Component> entity_map = components_by_class.get( component_name );
+		if ( componentsByClass.containsKey( component_name ) ) {
+			HashMap<Integer, Component> entity_map = componentsByClass.get( component_name );
 			entity_map.put( entity, component );
 		} else {
 			HashMap<Integer, Component> entity_map = new HashMap<Integer, Component>();
 			entity_map.put( entity, component );
-			components_by_class.put( component_name, entity_map );
+			componentsByClass.put( component_name, entity_map );
 		}
 	}
 	
@@ -93,11 +109,11 @@ public class EntityManager {
 	 * @param component_name The class name of the component we want to remove.
 	 */
 	public void removeComponent( int entity, String component_name ) {
-		components_by_class.get( component_name ).remove( entity ); 
+		componentsByClass.get( component_name ).remove( entity ); 
 	}
 	public void removeComponentSafe( int entity, String component_name ) {
-		if ( components_by_class.containsKey( component_name ) ) {
-			components_by_class.get( component_name ).remove( entity );  
+		if ( componentsByClass.containsKey( component_name ) ) {
+			componentsByClass.get( component_name ).remove( entity );  
 		}
 	}
 	
@@ -106,9 +122,9 @@ public class EntityManager {
 	 * @param component_name The class name of the component we want to check.
 	 */
 	public boolean hasComponent( int entity, String component_name ) {
-		if (!components_by_class.containsKey( component_name ) )
+		if (!componentsByClass.containsKey( component_name ) )
 			return false;
-		return components_by_class.get( component_name ).containsKey( entity );
+		return componentsByClass.get( component_name ).containsKey( entity );
 	}
 	
 	/**
@@ -116,7 +132,7 @@ public class EntityManager {
 	 * to the manager (added at least once).
 	 */
 	public boolean doesComponentExist( String component_name ) {
-		return components_by_class.containsKey( component_name );
+		return componentsByClass.containsKey( component_name );
 	}
 	
 	/**
@@ -126,7 +142,7 @@ public class EntityManager {
 	 * @param component_name The class name of the component we want to retrieve.
 	 */
 	public Component getComponent( int entity, String component_name ) {
-		return components_by_class.get( component_name ).get( entity );
+		return componentsByClass.get( component_name ).get( entity );
 	}
 	
 	/**
@@ -137,7 +153,7 @@ public class EntityManager {
 	 */
 	public ArrayList<Integer> getEntitiesHavingComponent( String component_name ) {
 		ArrayList<Integer> entities_list = new ArrayList<Integer>();
-		for ( int entity : components_by_class.get( component_name ).keySet() ) {
+		for ( int entity : componentsByClass.get( component_name ).keySet() ) {
 			entities_list.add( entity );
 		}
 		return entities_list;
@@ -174,7 +190,7 @@ public class EntityManager {
 	 */
 	public ArrayList<Component> getComponentsOfEntity( int entity ) {
 		ArrayList<Component> components_list = new ArrayList<Component>();
-		for ( HashMap<Integer, Component> entities_map : components_by_class.values() ) {
+		for ( HashMap<Integer, Component> entities_map : componentsByClass.values() ) {
 			if ( entities_map.containsKey( entity ) ) {
 				components_list.add( entities_map.get( entity ) );
 			}
@@ -189,7 +205,7 @@ public class EntityManager {
 	 */
 	public ArrayList<Component> getComponentsOfType( String component_name ) {
 		ArrayList<Component> components_list = new ArrayList<Component>();
-		for ( Component component_inside : components_by_class.get( component_name ).values() ) {
+		for ( Component component_inside : componentsByClass.get( component_name ).values() ) {
 			components_list.add( component_inside );
 		}
 		return components_list;
@@ -203,6 +219,6 @@ public class EntityManager {
 	}
 
 	public HashMap<String, HashMap<Integer, Component>> getComponentsByClass() {
-		return components_by_class;
+		return componentsByClass;
 	}
 }
