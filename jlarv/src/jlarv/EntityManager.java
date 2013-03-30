@@ -74,12 +74,13 @@ public class EntityManager {
 	 * @param entity The entity which will be erased.
 	 */
 	public synchronized void removeEntity( int entity ) {
+	    // Delete it from all the maps.
 		for ( HashMap<Integer, Component> value : componentsByClass.values() ) {
-			value.remove( entity );
-			entities.remove( entity );
-			// Add it's ID to be recycled later on
-			unassignedIDs.push(entity);
+			value.remove( entity );			
 		}
+		entities.remove( entities.indexOf( entity ) );
+		// Add it's ID to be recycled later on
+        unassignedIDs.push(entity);
 	}
 	
 	/**
