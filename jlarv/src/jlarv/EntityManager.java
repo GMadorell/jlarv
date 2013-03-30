@@ -37,7 +37,7 @@ public class EntityManager {
 	public EntityManager() {
 		componentsByClass = new HashMap<String, HashMap<Integer, Component>>();
 		entities = new ArrayList<Integer>();
-		lowestAssignedId = 0;
+		lowestAssignedId = Integer.MIN_VALUE;
 		unassignedIDs = new ArrayDeque<Integer>();
 	}
 	
@@ -45,12 +45,18 @@ public class EntityManager {
 	 * Generates a new unique id used for assigning it to a entity.
 	 * @return New unique ID (int).
 	 */
-	private int generateNewId() {
+	/* Synchronized means that only one thread can execute this block of code at the same time,
+	 * meaning that we will not be able to generate two new id's at the same time and thus we will not
+	 * have two entities with the same ID */
+	private synchronized int generateNewId() {
 	    if ( unassignedIDs.size() > 0 ) {
 	        return unassignedIDs.pop();
-	    } else {
+	    } else if ( lowestAssignedId < Integer.MAX_VALUE ) {
 	        return lowestAssignedId++;
+	    } else {
+	        throw new Error("ERROR - maximum entities ID reached.");
 	    }
+	    
 	}
 	
 	/**
@@ -67,7 +73,7 @@ public class EntityManager {
 	 * Removes the given entity from the entity manager (completely).
 	 * @param entity The entity which will be erased.
 	 */
-	public void removeEntity( int entity ) {
+	public synchronized void removeEntity( int entity ) {
 		for ( HashMap<Integer, Component> value : componentsByClass.values() ) {
 			value.remove( entity );
 			entities.remove( entity );
