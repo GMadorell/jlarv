@@ -16,21 +16,22 @@ import java.util.PriorityQueue;
  the systems in the right priority).
  */
 public class Engine {
+    
 	private PriorityQueue<System>  systems;
-	private EntityManager          entity_manager;
-	private GroupManager           group_manager;
-	private EntityFactory          entity_factory;
+	private EntityManager          entityManager;
+	private GroupManager           groupManager;
+	private EntityFactory          entityFactory;
 	
 	/**
 	 * Recommended constructor.
 	 * Only use the other one in case the entity factory isn't known beforehand.
 	 */
-	public Engine( EntityFactory entity_factory ) {
+	public Engine( EntityFactory entityFactory ) {
 		systems = new PriorityQueue<System>();
-		entity_manager = new EntityManager();
-		group_manager = new GroupManager( this );
+		entityManager = new EntityManager();
+		groupManager = new GroupManager( this );
 		
-		setEntityFactory( entity_factory );
+		setEntityFactory( entityFactory );
 	}
 	
 	/**
@@ -38,8 +39,8 @@ public class Engine {
 	 */
 	public Engine() {
 		systems = new PriorityQueue<System>();
-		entity_manager = new EntityManager();
-		group_manager = new GroupManager( this );
+		entityManager = new EntityManager();
+		groupManager = new GroupManager( this );
 	}	
 	
 	/**
@@ -49,9 +50,9 @@ public class Engine {
 	 */
 	public void addSystem( System system ) {
 		// Bind the system
-		system.setEntityManager( entity_manager );
-		system.setGroupManager( group_manager );
-		system.setEntityFactory( entity_factory );
+		system.setEntityManager( entityManager );
+		system.setGroupManager( groupManager );
+		system.setEntityFactory( entityFactory );
 		
 		systems.add( system );
 	}
@@ -59,20 +60,27 @@ public class Engine {
 	/**
 	 * Changes the given system's priority so it updates after/before.
 	 * Systems update from lower priority to higher.
+	 * @param cleanUp If true, sets all the system variables to null;
 	 */	
-	public void changeSystemPriority( System system, int new_priority ) {
-		systems.remove( system );
-		system.setPriority( new_priority );
+	public void changeSystemPriority( System system, int newPriority, boolean cleanUp ) {
+	    systems.remove( system );
+	    if ( cleanUp ) {
+	        cleanUpSystem( system );
+        }
+	    system.setPriority( newPriority );
 		systems.add( system );
-	}
-	
-	
-	/**
+	}	
+
+    /**
 	 * Removes the given system from the priority queue.
+	 * @param cleanUp If true, sets all the system variables to null;
 	 * @return True if success or false if failed to find it inside the system's
 	 *          PriorityQueue.
 	 */
-	public boolean removeSystem( System system ) {
+	public boolean removeSystem( System system, boolean cleanUp ) {
+	    if ( cleanUp ) {
+	        cleanUpSystem( system );
+	    }	    
 		return systems.remove( system );
 	}
 	
@@ -81,23 +89,32 @@ public class Engine {
 	 * @param delta The time elapsed since last update step.
 	 */
 	public void update( float delta ) {
-		for( System system : systems ) {
+		for ( System system : systems ) {
 			system.update( delta );
 		}
 	}
 	
 	/**
 	 * Empties the engine, setting every container to null so they can be 
-	 * garbage collected.
-	 * TODO: check against circular references
-	 *  that prevent garbage collection.
+	 * garbage collected. 
 	 */
+	// TODO: check against circular references that prevent garbage collection.
+	//       This can be done iterating over the systems and setting all their pointers to null and doing the
+	//       same with factories and managers.
 	public void clean() {
-		systems = null;
-		entity_manager = null;
-		entity_factory = null;
-		group_manager = null;
+		for ( System system : systems) {
+		    removeSystem( system, true );
+		}
+		entityManager = null;
+		entityFactory = null;
+		groupManager = null;
 	}
+	
+	private void cleanUpSystem( System system ) {
+	    system.setEntityFactory( null );
+	    system.setEntityManager( null );
+	    system.setGroupManager( null );
+    }
 	
 	/*
 	 * Getter methods.
@@ -107,24 +124,24 @@ public class Engine {
 	}
 
 	public EntityManager getEntityManager() {
-		return entity_manager;
+		return entityManager;
 	}
 
 	public GroupManager getGroupManager() {
-		return group_manager;
+		return groupManager;
 	}
 
 	public EntityFactory getEntityFactory() {
-		return entity_factory;
+		return entityFactory;
 	}
 	
 	/**
 	 * Setter for the entity factory, also binds it to the entity manager and the
 	 * group manager.
 	 */
-	public void setEntityFactory( EntityFactory entity_factory ) {
-		this.entity_factory = entity_factory;
-		this.entity_factory.setEntityManager( entity_manager );
-		this.entity_factory.setGroupManager( group_manager );
+	public void setEntityFactory( EntityFactory entityFactory ) {
+		this.entityFactory = entityFactory;
+		this.entityFactory.setEntityManager( entityManager );
+		this.entityFactory.setGroupManager( groupManager );
 	}
 }
