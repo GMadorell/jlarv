@@ -125,6 +125,26 @@ public class GroupManagerTest {
 	}
 	
 	@Test
+	public void testAddMultipleArgs() {
+	    setup();
+	    
+	    gm.add(ent1, comp_name_1, comp_name_2, comp_name_3);
+	    assertTrue(gm.getGroups(ent1).contains(comp_name_1));
+	    assertTrue(gm.getGroups(ent1).contains(comp_name_2));
+	    assertTrue(gm.getGroups(ent1).contains(comp_name_3));
+	    assertFalse(gm.getGroups(ent1).contains(comp_name_4));
+	    assertFalse(gm.getGroups(ent1).contains(comp_name_5));
+	    
+	    gm.add(ent2, comp_name_1, comp_name_2);
+	    assertTrue(gm.getGroups(ent2).contains(comp_name_1));
+	    assertTrue(gm.getGroups(ent2).contains(comp_name_2));
+	    assertFalse(gm.getGroups(ent2).contains(comp_name_3));
+	    assertFalse(gm.getGroups(ent2).contains(comp_name_4));
+	    assertFalse(gm.getGroups(ent2).contains(comp_name_5));
+	   
+	}
+	
+	@Test
 	public void testRemoveAndRemoveAll() {
 		setup();
 		add();

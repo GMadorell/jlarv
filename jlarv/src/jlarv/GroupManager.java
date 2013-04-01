@@ -52,6 +52,15 @@ public class GroupManager {
 	}
 	
 	/**
+	 * Adds the given entity to all the given groups.
+	 */
+	public void add( int entity, String ... groups) {
+	    for ( String group: groups ) {
+	        add( entity, group );
+	    }
+	}
+	
+	/**
 	 * Removes the given entity from the given group.
 	 */
 	public void remove( int entity, String group ) {
@@ -96,7 +105,7 @@ public class GroupManager {
 	/**
 	 * Returns a set of all the groups the entity is part of.
 	 */
-	public ArrayList<String> getGroups( int entity ){
+	public ArrayList<String> getGroups( int entity ) {
 		ArrayList<String> returnList = new ArrayList<String>();
 		// Iterate over all the HashMap (similar to Python's dict.getItems())
 		for ( Entry<String, ArrayList<Integer>> entry : entitiesByGroup.entrySet() ) {
