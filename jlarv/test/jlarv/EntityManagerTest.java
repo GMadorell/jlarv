@@ -73,28 +73,28 @@ public class EntityManagerTest {
 		createEntities();
 		add();
 //		java.lang.System.out.println(em.getComponentsByClass());
-//		java.lang.System.out.println(PhysicsComponent.class.getSimpleName());
-//		em.getComponent(entities.get(0), PhysicsComponent.class.getSimpleName());
-		assertEquals(em.getComponent(entities.get(0), PhysicsComponent.class.getSimpleName()), physics_comp);
-		assertEquals(em.getComponent(entities.get(0), RenderComponent.class.getSimpleName()), render_comp);
-		assertEquals(em.getComponent(entities.get(0), MovementComponent.class.getSimpleName()), movement_comp);
+//		java.lang.System.out.println(PhysicsComponent.class);
+//		em.getComponent(entities.get(0), PhysicsComponent.class);
+		assertEquals(em.getComponent(entities.get(0), PhysicsComponent.class), physics_comp);
+		assertEquals(em.getComponent(entities.get(0), RenderComponent.class), render_comp);
+		assertEquals(em.getComponent(entities.get(0), MovementComponent.class), movement_comp);
 		
-		assertEquals(em.getComponent(entities.get(1), PhysicsComponent.class.getSimpleName()), physics_comp);
-		assertEquals(em.getComponent(entities.get(1), RenderComponent.class.getSimpleName()), render_comp);
-		assertEquals(em.getComponent(entities.get(1), MovementComponent.class.getSimpleName()), movement_comp);
+		assertEquals(em.getComponent(entities.get(1), PhysicsComponent.class), physics_comp);
+		assertEquals(em.getComponent(entities.get(1), RenderComponent.class), render_comp);
+		assertEquals(em.getComponent(entities.get(1), MovementComponent.class), movement_comp);
 		
-		assertEquals(em.getComponent(entities.get(2), PhysicsComponent.class.getSimpleName()), physics_comp);
-		assertEquals(em.getComponent(entities.get(2), RenderComponent.class.getSimpleName()), render_comp);
-		assertEquals(em.getComponent(entities.get(2), MovementComponent.class.getSimpleName()), movement_comp);
+		assertEquals(em.getComponent(entities.get(2), PhysicsComponent.class), physics_comp);
+		assertEquals(em.getComponent(entities.get(2), RenderComponent.class), render_comp);
+		assertEquals(em.getComponent(entities.get(2), MovementComponent.class), movement_comp);
 		
-		assertEquals(em.getComponent(entities.get(3), PhysicsComponent.class.getSimpleName()), physics_comp);
-		assertEquals(em.getComponent(entities.get(3), MovementComponent.class.getSimpleName()), movement_comp);
+		assertEquals(em.getComponent(entities.get(3), PhysicsComponent.class), physics_comp);
+		assertEquals(em.getComponent(entities.get(3), MovementComponent.class), movement_comp);
 		
-		assertEquals(em.getComponent(entities.get(4), PhysicsComponent.class.getSimpleName()), physics_comp);
-		assertEquals(em.getComponent(entities.get(4), MovementComponent.class.getSimpleName()), movement_comp);
+		assertEquals(em.getComponent(entities.get(4), PhysicsComponent.class), physics_comp);
+		assertEquals(em.getComponent(entities.get(4), MovementComponent.class), movement_comp);
 		
-		assertEquals(em.getComponent(entities.get(5), RenderComponent.class.getSimpleName()), render_comp);
-		assertEquals(em.getComponent(entities.get(6), RenderComponent.class.getSimpleName()), render_comp);
+		assertEquals(em.getComponent(entities.get(5), RenderComponent.class), render_comp);
+		assertEquals(em.getComponent(entities.get(6), RenderComponent.class), render_comp);
 	}
 	
 	@Test
@@ -103,27 +103,27 @@ public class EntityManagerTest {
 		createEntities();
 		
 		// The entities shouldn't have any component right now
-		assertFalse(em.hasComponent(entities.get(0), PhysicsComponent.class.getSimpleName()));
-		assertFalse(em.hasComponent(entities.get(0), RenderComponent.class.getSimpleName()));
-		assertFalse(em.hasComponent(entities.get(0), MovementComponent.class.getSimpleName()));
+		assertFalse(em.hasComponent(entities.get(0), PhysicsComponent.class));
+		assertFalse(em.hasComponent(entities.get(0), RenderComponent.class));
+		assertFalse(em.hasComponent(entities.get(0), MovementComponent.class));
 		
 		// Add some components
 		add();
 		
 		// Now, they should have some components
-		assertTrue(em.hasComponent(entities.get(0), PhysicsComponent.class.getSimpleName()));
-		assertTrue(em.hasComponent(entities.get(0), RenderComponent.class.getSimpleName()));
-		assertTrue(em.hasComponent(entities.get(0), MovementComponent.class.getSimpleName()));
+		assertTrue(em.hasComponent(entities.get(0), PhysicsComponent.class));
+		assertTrue(em.hasComponent(entities.get(0), RenderComponent.class));
+		assertTrue(em.hasComponent(entities.get(0), MovementComponent.class));
 		
 		// Remove them
-		em.removeComponent(entities.get(0), PhysicsComponent.class.getSimpleName());
-		em.removeComponent(entities.get(0), RenderComponent.class.getSimpleName());
-		em.removeComponent(entities.get(0), MovementComponent.class.getSimpleName());
+		em.removeComponent(entities.get(0), PhysicsComponent.class);
+		em.removeComponent(entities.get(0), RenderComponent.class);
+		em.removeComponent(entities.get(0), MovementComponent.class);
 		
 		// Check possession of the component again
-		assertFalse(em.hasComponent(entities.get(0), PhysicsComponent.class.getSimpleName()));
-		assertFalse(em.hasComponent(entities.get(0), RenderComponent.class.getSimpleName()));
-		assertFalse(em.hasComponent(entities.get(0), MovementComponent.class.getSimpleName()));
+		assertFalse(em.hasComponent(entities.get(0), PhysicsComponent.class));
+		assertFalse(em.hasComponent(entities.get(0), RenderComponent.class));
+		assertFalse(em.hasComponent(entities.get(0), MovementComponent.class));
 	}
 	
 	@Test
@@ -142,7 +142,7 @@ public class EntityManagerTest {
 		createEntities();
 		add();
 		int i, max, max2 = 9;
-		ArrayList<Integer> set = em.getEntitiesHavingComponent(PhysicsComponent.class.getSimpleName());
+		ArrayList<Integer> set = em.getEntitiesHavingComponent(PhysicsComponent.class);
 		max = 5;
 		for (i = 0; i < max; i++) {
 			assertTrue(set.contains(entities.get(i)));
@@ -151,7 +151,7 @@ public class EntityManagerTest {
 			assertFalse(set.contains(entities.get(i)));
 		}
 		
-		set = em.getEntitiesHavingComponent(RenderComponent.class.getSimpleName());
+		set = em.getEntitiesHavingComponent(RenderComponent.class);
 		max = 3;
 		for (i = 0; i < max; i++) {
 			assertTrue(set.contains(entities.get(i)));
@@ -171,9 +171,9 @@ public class EntityManagerTest {
 		add();
 		
 		ArrayList<Integer> set = em.getEntitiesHavingComponents(
-				PhysicsComponent.class.getSimpleName(),
-				RenderComponent.class.getSimpleName(),
-				MovementComponent.class.getSimpleName());
+				PhysicsComponent.class,
+				RenderComponent.class,
+				MovementComponent.class);
 //		java.lang.System.out.println(set);
 		assertTrue(set.contains(entities.get(0)));
 		assertTrue(set.contains(entities.get(1)));
@@ -183,8 +183,8 @@ public class EntityManagerTest {
 		assertFalse(set.contains(entities.get(5)));	
 		
 		set = em.getEntitiesHavingComponents(
-				PhysicsComponent.class.getSimpleName(),
-				RenderComponent.class.getSimpleName());
+				PhysicsComponent.class,
+				RenderComponent.class);
 		assertTrue(set.contains(entities.get(0)));
 		assertTrue(set.contains(entities.get(1)));
 		assertTrue(set.contains(entities.get(2)));
@@ -193,8 +193,8 @@ public class EntityManagerTest {
 		assertFalse(set.contains(entities.get(5)));	
 		
 		set = em.getEntitiesHavingComponents(
-				PhysicsComponent.class.getSimpleName(),
-				MovementComponent.class.getSimpleName());
+				PhysicsComponent.class,
+				MovementComponent.class);
 		assertTrue(set.contains(entities.get(0)));
 		assertTrue(set.contains(entities.get(1)));
 		assertTrue(set.contains(entities.get(2)));
@@ -242,11 +242,11 @@ public class EntityManagerTest {
 		createEntities();		
 		add();
 		
-		ArrayList<Component> list = em.getComponentsOfType(PhysicsComponent.class.getSimpleName());
+		ArrayList<Component> list = em.getComponentsOfType(PhysicsComponent.class);
 		assertTrue(list.size() == 5);
-		list = em.getComponentsOfType(RenderComponent.class.getSimpleName());
+		list = em.getComponentsOfType(RenderComponent.class);
 		assertTrue(list.size() == 5);
-		list = em.getComponentsOfType(MovementComponent.class.getSimpleName());
+		list = em.getComponentsOfType(MovementComponent.class);
 		assertTrue(list.size() == 7);
 		
 	}
