@@ -8,13 +8,14 @@ package jlarv;
     of the system (aka, where the magic happens).
 
     When wanting to get components from entity manager, remember to call for those
-    using component_class.__name__, else they will not be recognized.
+    using SomeComponent.class, else they will not be recognized.
   */
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 public abstract class System implements Comparable<System> {
-	private EntityManager  entity_manager;
-	private EntityFactory  entity_factory;
-	private GroupManager   group_manager;
+    
+	private EntityManager  entityManager;
+	private EntityFactory  entityFactory;
+	private GroupManager   groupManager;
 	private int 		    priority;
 	
 	public System ( int priority ) {
@@ -22,36 +23,7 @@ public abstract class System implements Comparable<System> {
 	}
 	public System () {
 		this.priority = 0;
-	}
-	/**
-	 * Getters and setters.
-	 * Setters will be called whenever a System is added into an Engine.
-	 */
-	public EntityManager getEntityManager() {
-		return entity_manager;
 	}	
-	public EntityFactory getEntityFactory() {
-		return entity_factory;
-	}	
-	public GroupManager getGroupManager() {
-		return group_manager;
-	}
-	public int getPriority() {
-		return priority;
-	}
-	
-	public void setEntityManager( EntityManager entity_manager ) {
-		this.entity_manager = entity_manager;
-	}
-	public void setEntityFactory( EntityFactory entity_factory ) {
-		this.entity_factory = entity_factory;
-	}
-	public void setGroupManager( GroupManager group_manager ) {
-		this.group_manager = group_manager;
-	}
-	public void setPriority ( int priority ) {
-		this.priority = priority;
-	}
 	
 	/**
 	 * Update method will be called from engine in every game tick.
@@ -74,4 +46,34 @@ public abstract class System implements Comparable<System> {
 			return 1;
 		}
 	}
+	
+	/**
+     * Getters and setters.
+     * Setters will be called whenever a System is added into an Engine.
+     */
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }   
+    public EntityFactory getEntityFactory() {
+        return entityFactory;
+    }   
+    public GroupManager getGroupManager() {
+        return groupManager;
+    }
+    public int getPriority() {
+        return priority;
+    }
+    
+    public void setEntityManager( EntityManager entityManager ) {
+        this.entityManager = entityManager;
+    }
+    public void setEntityFactory( EntityFactory entityFactory ) {
+        this.entityFactory = entityFactory;
+    }
+    public void setGroupManager( GroupManager groupManager ) {
+        this.groupManager = groupManager;
+    }
+    public void setPriority ( int priority ) {
+        this.priority = priority;
+    }
 }
