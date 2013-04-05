@@ -159,8 +159,9 @@ public class EntityManager {
 	 * If you're really unsure about that possibility, perhaps using hasComponent might be a good idea.
 	 * @param componentType The class type of the component we want to get (SomeComponent.class).
 	 */
-	public Component getComponent( int entity, Class<? extends Component> componentType ) {
-		return componentsByClass.get( componentType ).get( entity );
+	// Info on generics: http://stackoverflow.com/questions/450807/java-generics-how-do-i-make-the-method-return-type-generic
+	public <T extends Component> T getComponent( int entity, Class<T> componentType ) {
+		return componentType.cast( componentsByClass.get( componentType ).get( entity ) ) ;
 	}
 	
 	/**
