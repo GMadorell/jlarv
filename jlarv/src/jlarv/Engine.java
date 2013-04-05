@@ -44,17 +44,19 @@ public class Engine {
 	}	
 	
 	/**
-	 * Adds the given system to the priority queue using the given priority and also
+	 * Adds the given systems to the priority queue using the given priority and also
 	 * binds the managers and the factory to it.
 	 * Priority works as the lowest value will be the first to update.
 	 */
-	public void addSystem( System system ) {
-		// Bind the system
-		system.setEntityManager( entityManager );
-		system.setGroupManager( groupManager );
-		system.setEntityFactory( entityFactory );
-		
-		systems.add( system );
+	public void addSystems( System ... systems ) {
+	    for ( System system : systems ) {
+        	// Bind the system
+        	system.setEntityManager( entityManager );
+        	system.setGroupManager( groupManager );
+        	system.setEntityFactory( entityFactory );
+        	
+        	this.systems.add( system );
+	    }
 	}
 	
 	/**
