@@ -21,7 +21,7 @@ import java.util.Map.Entry;
           call for it using self.group_manager.get('hero')
  */
 public class GroupManager {	
-	private Engine                               engine;
+	protected Engine                             engine;
 	private HashMap<String, ArrayList<Integer>>  entitiesByGroup;
 
 	public GroupManager( Engine engine ) {

@@ -18,9 +18,9 @@ import java.util.PriorityQueue;
 public class Engine {
     
 	private PriorityQueue<System>  systems;
-	private EntityManager          entityManager;
-	private GroupManager           groupManager;
-	private EntityFactory          entityFactory;
+	protected EntityManager          entityManager;
+	protected GroupManager           groupManager;
+	protected EntityFactory          entityFactory;
 	
 	/**
 	 * Recommended constructor.

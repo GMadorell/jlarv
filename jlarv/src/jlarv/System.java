@@ -13,10 +13,10 @@ package jlarv;
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 public abstract class System implements Comparable<System> {
     
-	private EntityManager  entityManager;
-	private EntityFactory  entityFactory;
-	private GroupManager   groupManager;
-	private int 		    priority;
+	protected EntityManager  entityManager;
+	protected EntityFactory  entityFactory;
+	protected GroupManager   groupManager;
+	private int 		      priority;
 	
 	public System ( int priority ) {
 		this.priority = priority;
