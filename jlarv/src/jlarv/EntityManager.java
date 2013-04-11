@@ -22,25 +22,25 @@ import java.util.HashMap;
 public class EntityManager {
     
     /* Holds all the active entities */
-	private ArrayList<Integer> entities;
+	private ArrayList<Long> entities;
 	
 	/* Map components using a double map of structure:
 	     - Class<? extends Component> = Type of the component, so we can add them via SomeComponent.class.
 	  	 - Integer = Entity unique ID.
 	  	 - Component = the Component associated to that entity.*/
-	private HashMap<Class<? extends Component>, HashMap<Integer, Component>> componentsByClass;
+	private HashMap<Class<? extends Component>, HashMap<Long, Component>> componentsByClass;
 	
 	/* Serves the purpose of never having two entities with the same ID (much like a database primary key) */
-	private int lowestAssignedId;
+	private long lowestAssignedId;
 	
 	/* Allows to recycle the IDs after entities have been deleted from the entity manager */
-	private ArrayDeque<Integer> unassignedIDs;	
+	private ArrayDeque<Long> unassignedIDs;	
 	
 	public EntityManager() {
-		componentsByClass = new HashMap<Class<? extends Component>, HashMap<Integer, Component>>();
-		entities = new ArrayList<Integer>();
+		componentsByClass = new HashMap<Class<? extends Component>, HashMap<Long, Component>>();
+		entities = new ArrayList<Long>();
 		lowestAssignedId = Integer.MIN_VALUE;
-		unassignedIDs = new ArrayDeque<Integer>();
+		unassignedIDs = new ArrayDeque<Long>();
 	}
 	
 	/**
@@ -50,7 +50,7 @@ public class EntityManager {
 	/* Synchronized means that only one thread can execute this block of code at the same time,
 	 * meaning that we will not be able to generate two new id's at the same time and thus we will not
 	 * have two entities with the same ID */
-	private synchronized int generateNewId() {
+	private synchronized long generateNewId() {
 	    if ( unassignedIDs.size() > 0 ) {
 	        return unassignedIDs.pop();
 	    } else if ( lowestAssignedId < Integer.MAX_VALUE ) {
@@ -65,8 +65,8 @@ public class EntityManager {
 	 * Creates and returns a new entity.
 	 * @return Entity ID (int).
 	 */
-	public int createEntity() {
-		int new_id = generateNewId();
+	public long createEntity() {
+		long new_id = generateNewId();
 		entities.add( new_id );
 		return new_id;
 	}
@@ -75,9 +75,9 @@ public class EntityManager {
 	 * Removes the given entity from the entity manager (completely).
 	 * @param entity The entity which will be erased.
 	 */
-	public synchronized void removeEntity( int entity ) {
+	public synchronized void removeEntity( long entity ) {
 	    // Delete it from all the maps.
-		for ( HashMap<Integer, Component> value : componentsByClass.values() ) {
+		for ( HashMap<Long, Component> value : componentsByClass.values() ) {
 			value.remove( entity );			
 		}
 		entities.remove( entities.indexOf( entity ) );
@@ -89,13 +89,13 @@ public class EntityManager {
 	 * Adds the given component to the given entity.
 	 * Overrides the actual component if a new one is given.
 	 */
-	public void addComponent( int entity, Component component ) {
+	public void addComponent( long entity, Component component ) {
 	    Class<? extends Component> componentType = component.getClass();	
 		if ( componentsByClass.containsKey( componentType ) ) {
-			HashMap<Integer, Component> entity_map = componentsByClass.get( componentType );
+			HashMap<Long, Component> entity_map = componentsByClass.get( componentType );
 			entity_map.put( entity, component );
 		} else {
-			HashMap<Integer, Component> entity_map = new HashMap<Integer, Component>();
+			HashMap<Long, Component> entity_map = new HashMap<Long, Component>();
 			entity_map.put( entity, component );
 			componentsByClass.put( componentType, entity_map );
 		}
@@ -105,7 +105,7 @@ public class EntityManager {
 	 * Adds all the given components to the given entity.
 	 * Overrides the anterior components if they existed.
 	 */
-	public void addComponents( int entity, Component ... components ) {
+	public void addComponents( long entity, Component ... components ) {
 		for ( Component component : components ) {
 			addComponent( entity, component );
 		}
@@ -118,7 +118,7 @@ public class EntityManager {
 	 * You can use removeComponentSafe if that's a problem.
 	 * @param componentType The class type of the component we want to remove (SomeComponent.class).
 	 */
-	public void removeComponent( int entity, Class<? extends Component> componentType ) {
+	public void removeComponent( long entity, Class<? extends Component> componentType ) {
 		componentsByClass.get( componentType ).remove( entity ); 
 	}
 	
@@ -128,7 +128,7 @@ public class EntityManager {
 	 * if the component was never added to the entity manager.
 	 * @param componentType The class type of the component we want to remove (SomeComponent.class).
 	 */
-	public void removeComponentSafe( int entity, Class<? extends Component> componentType ) {
+	public void removeComponentSafe( long entity, Class<? extends Component> componentType ) {
 		if ( componentsByClass.containsKey( componentType ) ) {
 			componentsByClass.get( componentType ).remove( entity );  
 		}
@@ -138,7 +138,7 @@ public class EntityManager {
 	 * Returns a boolean depending on whether the given entity has the given component or not.
 	 * @param componentType The class type of the component we want to check (SomeComponent.class).
 	 */
-	public boolean hasComponent( int entity, Class<? extends Component> componentType ) {
+	public boolean hasComponent( long entity, Class<? extends Component> componentType ) {
 		if ( ! componentsByClass.containsKey( componentType ) )
 			return false;
 		return componentsByClass.get( componentType ).containsKey( entity );
@@ -160,7 +160,7 @@ public class EntityManager {
 	 * @param componentType The class type of the component we want to get (SomeComponent.class).
 	 */
 	// Info on generics: http://stackoverflow.com/questions/450807/java-generics-how-do-i-make-the-method-return-type-generic
-	public <T extends Component> T getComponent( int entity, Class<T> componentType ) {
+	public <T extends Component> T getComponent( long entity, Class<T> componentType ) {
 		return componentType.cast( componentsByClass.get( componentType ).get( entity ) ) ;
 	}
 	
@@ -170,9 +170,9 @@ public class EntityManager {
 	 * to the manager. If that really bothers you, you can try to use doesComponentExist().
 	 * @param componentType The class type of the component we want to process (SomeComponent.class).
 	 */
-	public ArrayList<Integer> getEntitiesHavingComponent( Class<? extends Component> componentType ) {
-		ArrayList<Integer> entities_list = new ArrayList<Integer>();
-		for ( int entity : componentsByClass.get( componentType ).keySet() ) {
+	public ArrayList<Long> getEntitiesHavingComponent( Class<? extends Component> componentType ) {
+		ArrayList<Long> entities_list = new ArrayList<Long>();
+		for ( Long entity : componentsByClass.get( componentType ).keySet() ) {
 			entities_list.add( entity );
 		}
 		return entities_list;
@@ -185,11 +185,11 @@ public class EntityManager {
 	 * @param componentType The class types of the components we want to process (SomeComponent.class).
 	 */
 	@SafeVarargs // Allows us to use to evade warnings on every method call.
-	public final ArrayList<Integer> getEntitiesHavingComponents( Class<? extends Component> ... components ) {
-		ArrayList<Integer> entitiesList = getEntitiesHavingComponent( components[0] ); //avoid 1 iteration
-		ArrayList<Integer> auxiliarList = new ArrayList<Integer>();
+	public final ArrayList<Long> getEntitiesHavingComponents( Class<? extends Component> ... components ) {
+		ArrayList<Long> entitiesList = getEntitiesHavingComponent( components[0] ); //avoid 1 iteration
+		ArrayList<Long> auxiliarList = new ArrayList<Long>();
 		Class<? extends Component> componentType;
-		int entity;
+		Long entity;
 		// Iterate over the arguments
 		for ( int i = 1, len = components.length; i < len; i++ ) {
 			componentType = components[i];
@@ -208,9 +208,9 @@ public class EntityManager {
 	/**
 	 * Returns a list of all the components that the given entity has at the moment.
 	 */
-	public ArrayList<Component> getComponentsOfEntity( int entity ) {
+	public ArrayList<Component> getComponentsOfEntity( long entity ) {
 		ArrayList<Component> componentsList = new ArrayList<Component>();
-		for ( HashMap<Integer, Component> entities_map : componentsByClass.values() ) {
+		for ( HashMap<Long, Component> entities_map : componentsByClass.values() ) {
 			if ( entities_map.containsKey( entity ) ) {
 				componentsList.add( entities_map.get( entity ) );
 			}
@@ -234,11 +234,11 @@ public class EntityManager {
 	/*
 	 * Getters and setters.
 	 */
-	public ArrayList<Integer> getEntities() {
+	public ArrayList<Long> getEntities() {
 		return entities;
 	}
 
-	public HashMap<Class<? extends Component>, HashMap<Integer, Component>> getComponentsByClass() {
+	public HashMap<Class<? extends Component>, HashMap<Long, Component>> getComponentsByClass() {
 		return componentsByClass;
 	}
 }

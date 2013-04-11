@@ -16,11 +16,11 @@ public class EntityManagerTest {
 	EntityManager em;
 	
 	// Data to debug entities
-	ArrayList<Integer> entities;
+	ArrayList<Long> entities;
 	
 	
 	private void setup() {
-		entities = new ArrayList<Integer>();
+		entities = new ArrayList<Long>();
 		engine = new Engine();
 		group_manager = new GroupManager();
 		em = new EntityManager();
@@ -142,7 +142,7 @@ public class EntityManagerTest {
 		createEntities();
 		add();
 		int i, max, max2 = 9;
-		ArrayList<Integer> set = em.getEntitiesHavingComponent(PhysicsComponent.class);
+		ArrayList<Long> set = em.getEntitiesHavingComponent(PhysicsComponent.class);
 		max = 5;
 		for (i = 0; i < max; i++) {
 			assertTrue(set.contains(entities.get(i)));
@@ -170,7 +170,7 @@ public class EntityManagerTest {
 		createEntities();
 		add();
 		
-		ArrayList<Integer> set = em.getEntitiesHavingComponents(
+		ArrayList<Long> set = em.getEntitiesHavingComponents(
 				PhysicsComponent.class,
 				RenderComponent.class,
 				MovementComponent.class);
