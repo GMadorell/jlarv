@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 /*
-	Allows entities to be added longo groups to be fetched later on.
+	Allows entities to be added to groups to be fetched later on.
     For example, we could have a group called 'hero' and add the hero to it,
     and then we could fetch for all the entities that are from the 'hero'
     group, getting only the hero, obviously.
@@ -21,7 +21,7 @@ import java.util.Map.Entry;
           call for it using self.group_manager.get('hero')
  */
 public class GroupManager {	
-	protected Engine                             engine;
+	protected Engine                          engine;
 	private HashMap<String, ArrayList<Long>>  entitiesByGroup;
 
 	public GroupManager( Engine engine ) {
@@ -37,7 +37,7 @@ public class GroupManager {
 	}
 
 	/**
-	 * Adds the given entity longo the given group.
+	 * Adds the given entity into the given group.
 	 * An entity can't be in the same group twice.
 	 */
 	public void add( long entity, String group ) {
@@ -103,7 +103,7 @@ public class GroupManager {
 	}
 	
 	/**
-	 * Returns a set of all the groups the entity is part of.
+	 * Returns a list of all the groups the entity is part of.
 	 */
 	public ArrayList<String> getGroups( long entity ) {
 		ArrayList<String> returnList = new ArrayList<String>();
@@ -131,11 +131,11 @@ public class GroupManager {
 	public boolean doesGroupExist( String group ) {
 		if ( ! entitiesByGroup.containsKey( group ) ) {
 			return false;
-		}
-		if ( entitiesByGroup.get( group ).isEmpty() ) {
+		} else if ( entitiesByGroup.get( group ).isEmpty() ) {
 			return false;
+		} else {
+		    return true;
 		}
-		return true;
 	}
 	
 	/**

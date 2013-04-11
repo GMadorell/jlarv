@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /*
  	EntityManager is a object that acts as the 'database' of the system.
@@ -60,8 +59,7 @@ public class EntityManager {
 	        return lowestAssignedId++;
 	    } else {
 	        throw new Error("ERROR - maximum entities ID reached.");
-	    }
-	    
+	    }	    
 	}
 	
 	/**
@@ -256,7 +254,7 @@ public class EntityManager {
 	}
 	
 	/**
-	 * Cleans up.
+	 * Cleans up after we don't need the entity manager anymore.
 	 */
 	public void dispose() {
 	    for ( HashMap<Long, Component> map : componentsByClass.values() ) {
