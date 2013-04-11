@@ -138,6 +138,14 @@ public class GroupManager {
 		return true;
 	}
 	
+	/**
+	 * Cleans up.
+	 */
+	public void dispose () {
+	    engine = null;
+	    entitiesByGroup.clear();
+	}
+	
 	/*
 	 * Getters and setters.
 	 */

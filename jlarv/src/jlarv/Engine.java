@@ -62,12 +62,12 @@ public class Engine {
 	/**
 	 * Changes the given system's priority so it updates after/before.
 	 * Systems update from lower priority to higher.
-	 * @param cleanUp If true, sets all the system variables to null;
+	 * @param cleanUp If true, disposes the system.
 	 */	
 	public void changeSystemPriority( System system, int newPriority, boolean cleanUp ) {
 	    systems.remove( system );
 	    if ( cleanUp ) {
-	        cleanUpSystem( system );
+	        system.dispose();
         }
 	    system.setPriority( newPriority );
 		systems.add( system );
@@ -75,13 +75,13 @@ public class Engine {
 
     /**
 	 * Removes the given system from the priority queue.
-	 * @param cleanUp If true, sets all the system variables to null;
+	 * @param cleanUp If true, disposes the system.
 	 * @return True if success or false if failed to find it inside the system's
 	 *          PriorityQueue.
 	 */
 	public boolean removeSystem( System system, boolean cleanUp ) {
 	    if ( cleanUp ) {
-	        cleanUpSystem( system );
+	        system.dispose();
 	    }	    
 		return systems.remove( system );
 	}
@@ -100,23 +100,14 @@ public class Engine {
 	 * Empties the engine, setting every container to null so they can be 
 	 * garbage collected. 
 	 */
-	// TODO: check against circular references that prevent garbage collection.
-	//       This can be done iterating over the systems and setting all their pointers to null and doing the
-	//       same with factories and managers.
-	public void clean() {
+	public void dispose() {
 		for ( System system : systems) {
-		    removeSystem( system, true );
+		    system.dispose();
 		}
-		entityManager = null;
-		entityFactory = null;
-		groupManager = null;
-	}
-	
-	private void cleanUpSystem( System system ) {
-	    system.setEntityFactory( null );
-	    system.setEntityManager( null );
-	    system.setGroupManager( null );
-    }
+		entityManager.dispose();
+		entityFactory.dispose();
+		groupManager.dispose();
+	}	
 	
 	/*
 	 * Getter methods.

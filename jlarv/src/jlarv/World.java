@@ -84,4 +84,14 @@ public class World {
 		final Tuple tuple = functionArgsTupleType.createTuple( func, args );
 		postupdate_functions.add( tuple );
 	}
+	
+	/**
+	 * Cleans up.
+	 */
+	public void dispose () {
+	    for ( Engine engine : engine_stack ) {
+	        engine.dispose();
+	    }
+	    engine_stack.clear();
+	}
 }

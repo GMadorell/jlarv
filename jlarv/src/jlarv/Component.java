@@ -13,4 +13,10 @@ package jlarv;
   Logic is 100% done by the Systems.  
  */
 public abstract class Component {
+    
+    /**
+     * Cleans up.
+     */
+    public void dispose() {        
+    }
 }

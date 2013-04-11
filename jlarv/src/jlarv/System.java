@@ -16,7 +16,7 @@ public abstract class System implements Comparable<System> {
 	protected EntityManager  entityManager;
 	protected EntityFactory  entityFactory;
 	protected GroupManager   groupManager;
-	private int 		      priority;
+	private   int 		      priority;
 	
 	public System ( int priority ) {
 		this.priority = priority;
@@ -30,6 +30,15 @@ public abstract class System implements Comparable<System> {
 	 * It will iterate over entities and components and process them.
 	 */
 	public abstract void update( float delta );
+	
+	/**
+	 * Cleans up the system.
+	 */
+	public void dispose() {
+	    entityManager = null;
+	    entityFactory = null;
+	    groupManager = null;
+    }
 	
 	/**
 	 * Implement Comparator interface.
@@ -46,7 +55,7 @@ public abstract class System implements Comparable<System> {
 			return 1;
 		}
 	}
-	
+		
 	/**
      * Getters and setters.
      * Setters will be called whenever a System is added into an Engine.
@@ -76,4 +85,5 @@ public abstract class System implements Comparable<System> {
     public void setPriority ( int priority ) {
         this.priority = priority;
     }
+    
 }

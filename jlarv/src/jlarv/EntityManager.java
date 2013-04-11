@@ -229,7 +229,21 @@ public class EntityManager {
 			componentsList.add( componentInside );
 		}
 		return componentsList;
-	}	
+	}
+	
+	/**
+	 * Cleans up.
+	 */
+	public void dispose() {
+	    for ( HashMap<Long, Component> map : componentsByClass.values() ) {
+	        for ( Component component : map.values() ) {
+	            component.dispose();
+	        }
+	    }
+	    entities.clear();
+	    componentsByClass.clear();
+	    unassignedIDs.clear();	    
+	}
 	
 	/*
 	 * Getters and setters.

@@ -20,6 +20,14 @@ public abstract class EntityFactory {
 	protected EntityManager  entityManager;
 	protected GroupManager   groupManager;
 	
+	/**
+	 * Cleans up.
+	 */
+	public void dispose() {
+	    entityManager = null;
+	    groupManager = null;
+	}
+	
 	/*
 	 * Getter methods.
 	 */
