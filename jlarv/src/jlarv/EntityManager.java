@@ -78,6 +78,10 @@ public class EntityManager {
 	public synchronized void removeEntity( long entity ) {
 	    // Delete it from all the maps.
 		for ( HashMap<Long, Component> value : componentsByClass.values() ) {
+		    Component component = value.get( entity );
+		    if ( component != null ) {
+		        component.dispose();
+		    }
 			value.remove( entity );			
 		}
 		entities.remove( entities.indexOf( entity ) );
