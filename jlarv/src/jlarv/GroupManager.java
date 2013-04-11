@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 /*
-	Allows entities to be added into groups to be fetched later on.
+	Allows entities to be added longo groups to be fetched later on.
     For example, we could have a group called 'hero' and add the hero to it,
     and then we could fetch for all the entities that are from the 'hero'
     group, getting only the hero, obviously.
@@ -22,10 +22,10 @@ import java.util.Map.Entry;
  */
 public class GroupManager {	
 	protected Engine                             engine;
-	private HashMap<String, ArrayList<Integer>>  entitiesByGroup;
+	private HashMap<String, ArrayList<Long>>  entitiesByGroup;
 
 	public GroupManager( Engine engine ) {
-		entitiesByGroup = new HashMap<String, ArrayList<Integer>>();
+		entitiesByGroup = new HashMap<String, ArrayList<Long>>();
 		this.engine = engine;
 	}
 	
@@ -33,19 +33,19 @@ public class GroupManager {
 	 * Using this constructor is not recommended. Need to assign engine later.
 	 */
 	public GroupManager() {	
-		entitiesByGroup = new HashMap<String, ArrayList<Integer>>();
+		entitiesByGroup = new HashMap<String, ArrayList<Long>>();
 	}
 
 	/**
-	 * Adds the given entity into the given group.
+	 * Adds the given entity longo the given group.
 	 * An entity can't be in the same group twice.
 	 */
-	public void add( int entity, String group ) {
+	public void add( long entity, String group ) {
 		if (entitiesByGroup.containsKey( group ) ) {
 			entitiesByGroup.get( group ).add( entity );
 		}
 		else {
-			ArrayList<Integer> entitiesList = new ArrayList<Integer>();
+			ArrayList<Long> entitiesList = new ArrayList<Long>();
 			entitiesList.add( entity );
 			entitiesByGroup.put( group, entitiesList );
 		}
@@ -54,7 +54,7 @@ public class GroupManager {
 	/**
 	 * Adds the given entity to all the given groups.
 	 */
-	public void add( int entity, String ... groups) {
+	public void add( long entity, String ... groups) {
 	    for ( String group: groups ) {
 	        add( entity, group );
 	    }
@@ -63,8 +63,8 @@ public class GroupManager {
 	/**
 	 * Removes the given entity from the given group.
 	 */
-	public void remove( int entity, String group ) {
-		ArrayList<Integer> entitiesList = entitiesByGroup.get( group );
+	public void remove( long entity, String group ) {
+		ArrayList<Long> entitiesList = entitiesByGroup.get( group );
 		if ( entitiesList != null ) {
 			entitiesList.remove( entitiesList.indexOf( entity ) );
 		}
@@ -74,24 +74,24 @@ public class GroupManager {
 	 * Removes the given entity from the group manager checking against
 	 * every single value.
 	 */
-	public void removeCompletely( int entity ) {
-		for ( ArrayList<Integer> entityList : entitiesByGroup.values() ) {
+	public void removeCompletely( long entity ) {
+		for ( ArrayList<Long> entityList : entitiesByGroup.values() ) {
 			entityList.remove( entityList.indexOf( entity ) );
 		}
 	}
 	
 	/**
-	 * Returns a ArrayList<Integer> containing all the entities that are in every argument.
+	 * Returns a ArrayList<Long> containing all the entities that are in every argument.
 	 * If used with only one argument, will return only the entities in that component.
 	 */
-	public ArrayList<Integer> get ( String ... args ) {
-		ArrayList<Integer> entitiesList = entitiesByGroup.get( args[0] );
-		ArrayList<Integer> auxiliarList = new ArrayList<Integer>();
-		int entity;
+	public ArrayList<Long> get ( String ... args ) {
+		ArrayList<Long> entitiesList = entitiesByGroup.get( args[0] );
+		ArrayList<Long> auxiliarList = new ArrayList<Long>();
+		long entity;
 		for ( int i = 1, size = args.length; i < size; i++ ) {	
 			auxiliarList = entitiesByGroup.get( args[i] );
 			
-			// Intersection - We must traverse list in inverse order to evade ConcurrentModificationException		
+			// intersection - We must traverse list in inverse order to evade ConcurrentModificationException		
 			for ( int j = entitiesList.size()-1; j >= 0; j-- ) {
 				entity = entitiesList.get( j );
 				if ( ! auxiliarList.contains( entity ) ) {
@@ -105,10 +105,10 @@ public class GroupManager {
 	/**
 	 * Returns a set of all the groups the entity is part of.
 	 */
-	public ArrayList<String> getGroups( int entity ) {
+	public ArrayList<String> getGroups( long entity ) {
 		ArrayList<String> returnList = new ArrayList<String>();
 		// Iterate over all the HashMap (similar to Python's dict.getItems())
-		for ( Entry<String, ArrayList<Integer>> entry : entitiesByGroup.entrySet() ) {
+		for ( Entry<String, ArrayList<Long>> entry : entitiesByGroup.entrySet() ) {
 			if ( entry.getValue().contains( entity ) ) { 
 				returnList.add( entry.getKey() );
 			}
@@ -119,8 +119,8 @@ public class GroupManager {
 	/**
 	 * @return A boolean depending on whether the given entity is on the given group or not.
 	 */
-	public boolean isInGroup( int entity, String group ) {
-		ArrayList<Integer> entitiesSet = entitiesByGroup.get( group );
+	public boolean isInGroup( long entity, String group ) {
+		ArrayList<Long> entitiesSet = entitiesByGroup.get( group );
 		return entitiesSet.contains( entity );
 	}	
 	
@@ -149,7 +149,7 @@ public class GroupManager {
 	/*
 	 * Getters and setters.
 	 */
-	public HashMap<String, ArrayList<Integer>> getEntitiesByGroup() {
+	public HashMap<String, ArrayList<Long>> getEntitiesByGroup() {
 		return entitiesByGroup;
 	}
 	public Engine getEngine() {

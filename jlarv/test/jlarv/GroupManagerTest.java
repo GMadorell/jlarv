@@ -18,14 +18,14 @@ public class GroupManagerTest {
 	ArrayList<String> comp_names;
 	String comp_name_1, comp_name_2, comp_name_3, comp_name_4, comp_name_5;
 	// Data to simulate entities (unique ids)
-	ArrayList<Integer> entities;
-	int ent1, ent2, ent3, ent4, ent5, ent6, ent7, ent8;
+	ArrayList<Long> entities;
+	long ent1, ent2, ent3, ent4, ent5, ent6, ent7, ent8;
 	
 	private void setup() {
 		engine = new Engine();
 		gm = new GroupManager();
 		comp_names = new ArrayList<String>();
-		entities = new ArrayList<Integer>();
+		entities = new ArrayList<Long>();
 		
 		comp_name_1 = "MoveComponent";
 		comp_name_2 = "PhysicsComponent";
@@ -99,7 +99,7 @@ public class GroupManagerTest {
 		assertTrue(!gm.get(comp_name_1).contains(ent5));
 		
 		// Test get with multiple arguments
-		ArrayList<Integer> get_set = gm.get(comp_name_1, comp_name_2, comp_name_3);
+		ArrayList<Long> get_set = gm.get(comp_name_1, comp_name_2, comp_name_3);
 //		java.lang.System.out.println(gm.getEntitiesByGroup());
 //		java.lang.System.out.println(get_set);
 		assertTrue(get_set.contains(ent1));
@@ -150,7 +150,7 @@ public class GroupManagerTest {
 		add();
 		
 		// First, we check that the entities initially pertain at the group
-		ArrayList<Integer> get_set = gm.get(comp_name_3);
+		ArrayList<Long> get_set = gm.get(comp_name_3);
 //		java.lang.System.out.println(gm.getEntitiesByGroup());
 		assertTrue(get_set.contains(ent1));
 		assertTrue(get_set.contains(ent2));
