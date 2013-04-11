@@ -3,6 +3,9 @@ package jlarv;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /*
  	EntityManager is a object that acts as the 'database' of the system.
@@ -39,7 +42,7 @@ public class EntityManager {
 	public EntityManager() {
 		componentsByClass = new HashMap<Class<? extends Component>, HashMap<Long, Component>>();
 		entities = new ArrayList<Long>();
-		lowestAssignedId = Integer.MIN_VALUE;
+		lowestAssignedId = Long.MIN_VALUE;
 		unassignedIDs = new ArrayDeque<Long>();
 	}
 	
@@ -53,7 +56,7 @@ public class EntityManager {
 	private synchronized long generateNewId() {
 	    if ( unassignedIDs.size() > 0 ) {
 	        return unassignedIDs.pop();
-	    } else if ( lowestAssignedId < Integer.MAX_VALUE ) {
+	    } else if ( lowestAssignedId < Long.MAX_VALUE ) {
 	        return lowestAssignedId++;
 	    } else {
 	        throw new Error("ERROR - maximum entities ID reached.");
@@ -77,16 +80,28 @@ public class EntityManager {
 	 */
 	public synchronized void removeEntity( long entity ) {
 	    // Delete it from all the maps.
-		for ( HashMap<Long, Component> value : componentsByClass.values() ) {
-		    Component component = value.get( entity );
-		    if ( component != null ) {
-		        component.dispose();
-		    }
-			value.remove( entity );			
-		}
-		entities.remove( entities.indexOf( entity ) );
-		// Add it's ID to be recycled later on
-        unassignedIDs.push(entity);
+	    // Using an iterator we can delete the maps while iterating through them.
+	    //   more info: http://stackoverflow.com/questions/602636/concurrentmodificationexception-and-a-hashmap
+	    Iterator<Entry<Class<? extends Component>, HashMap<Long, Component>>> iterator =
+	            componentsByClass.entrySet().iterator();
+	    
+	    while ( iterator.hasNext() ) {
+	        Entry<Class<? extends Component>, HashMap<Long, Component>> entry =
+	                (Entry<Class<? extends Component>, HashMap<Long, Component>>) iterator.next();	        
+	        
+	        // See if we can find a component held by the entity
+	        Component component = entry.getValue().get( entity );
+	        if ( component != null ) {
+	            component.dispose();
+	            entry.getValue().remove( entity );
+	            if ( entry.getValue().size() == 0) {
+	                iterator.remove();
+	            }
+            }            
+	    }
+	    entities.remove( entities.indexOf( entity ) );
+        // Add the ID to be recycled later on
+        unassignedIDs.push(entity);	    
 	}
 	
 	/**
@@ -123,8 +138,12 @@ public class EntityManager {
 	 * @param componentType The class type of the component we want to remove (SomeComponent.class).
 	 */
 	public void removeComponent( long entity, Class<? extends Component> componentType ) {
-	    componentsByClass.get( componentType ).get( entity ).dispose();
-		componentsByClass.get( componentType ).remove( entity ); 
+	    HashMap<Long, Component> map = componentsByClass.get( componentType );
+	    map.get( entity ).dispose();
+		map.remove( entity ); 
+		if ( map.size() == 0) {
+		    componentsByClass.remove( componentType );
+		}
 	}
 	
 	/**
@@ -135,8 +154,7 @@ public class EntityManager {
 	 */
 	public void removeComponentSafe( long entity, Class<? extends Component> componentType ) {
 		if ( componentsByClass.containsKey( componentType ) ) {
-		    componentsByClass.get( componentType ).get( entity ).dispose();
-			componentsByClass.get( componentType ).remove( entity );  
+		    removeComponent( entity, componentType ); 
 		}
 	}
 	
