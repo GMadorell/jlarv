@@ -119,6 +119,7 @@ public class EntityManager {
 	 * @param componentType The class type of the component we want to remove (SomeComponent.class).
 	 */
 	public void removeComponent( long entity, Class<? extends Component> componentType ) {
+	    componentsByClass.get( componentType ).get( entity ).dispose();
 		componentsByClass.get( componentType ).remove( entity ); 
 	}
 	
@@ -130,6 +131,7 @@ public class EntityManager {
 	 */
 	public void removeComponentSafe( long entity, Class<? extends Component> componentType ) {
 		if ( componentsByClass.containsKey( componentType ) ) {
+		    componentsByClass.get( componentType ).get( entity ).dispose();
 			componentsByClass.get( componentType ).remove( entity );  
 		}
 	}
