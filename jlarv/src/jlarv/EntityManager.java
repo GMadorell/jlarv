@@ -187,17 +187,17 @@ public class EntityManager {
 	}
 	
 	/**
-	 * Returns a set of all the entities that have the given component.
+	 * Returns a set of all the entities that have the given component type.
 	 * Fails (on purpose) if the component wasn't ever introduced (added at least once)
 	 * to the manager. If that really bothers you, you can try to use doesComponentExist().
 	 * @param componentType The class type of the component we want to process (SomeComponent.class).
 	 */
 	public ArrayList<Long> getEntitiesHavingComponent( Class<? extends Component> componentType ) {
-		ArrayList<Long> entities_list = new ArrayList<Long>();
+		ArrayList<Long> entitiesList = new ArrayList<Long>();
 		for ( Long entity : componentsByClass.get( componentType ).keySet() ) {
-			entities_list.add( entity );
+			entitiesList.add( entity );
 		}
-		return entities_list;
+		return entitiesList;
 	}
 	
 	/**
@@ -228,9 +228,23 @@ public class EntityManager {
 	}
 	
 	/**
+	 * Returns a list containing all the entities that have the EXACT same
+	 * component as the given one.
+	 */
+	public ArrayList<Long> getEntitiesHavingComponent( Component component ) {
+	    ArrayList<Long> entitiesList = new ArrayList<Long>();
+        for ( Entry<Long, Component> entry : componentsByClass.get( component.getClass() ).entrySet() ) {
+            if ( entry.getValue() == component ) {
+                entitiesList.add( entry.getKey() );
+            }            
+        }
+        return entitiesList;
+	}
+	
+	/**
 	 * Returns a list of all the components that the given entity has at the moment.
 	 */
-	public ArrayList<Component> getComponentsOfEntity( long entity ) {
+ 	public ArrayList<Component> getComponentsOfEntity( long entity ) {
 		ArrayList<Component> componentsList = new ArrayList<Component>();
 		for ( HashMap<Long, Component> entities_map : componentsByClass.values() ) {
 			if ( entities_map.containsKey( entity ) ) {
