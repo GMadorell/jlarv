@@ -21,10 +21,7 @@ public abstract class System implements Comparable<System> {
 	public System ( int priority ) {
 		this.priority = priority;
 	}
-	public System () {
-		this.priority = 0;
-	}	
-	
+		
 	/**
 	 * Update method will be called from engine in every game tick.
 	 * It will iterate over entities and components and process them.
