@@ -53,11 +53,11 @@ public class EntityManager {
 	 * meaning that we will not be able to generate two new id's at the same time and thus we will not
 	 * have two entities with the same ID */
 	private synchronized long generateNewId() {
-	    if ( unassignedIDs.size() > 0 ) {
-	        return unassignedIDs.pop();
-	    } else if ( lowestAssignedId < Long.MAX_VALUE ) {
+	    if ( lowestAssignedId < Long.MAX_VALUE ) {
 	        return lowestAssignedId++;
-	    } else {
+	    } else if ( unassignedIDs.size() > 0 ) {
+            return unassignedIDs.pop();
+        } else {
 	        throw new Error("ERROR - maximum entities ID reached.");
 	    }	    
 	}
