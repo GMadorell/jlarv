@@ -291,4 +291,15 @@ public class EntityManager {
 	public HashMap<Class<? extends Component>, HashMap<Long, Component>> getComponentsByClass() {
 		return componentsByClass;
 	}
+	
+	/** Also deletes the previous data. */
+	public void setComponentsByClass( HashMap<Class<? extends Component>, HashMap<Long, Component>> newData ) {
+	    for ( HashMap<Long, Component> map : componentsByClass.values() ) {
+            for ( Component component : map.values() ) {
+                component.dispose();
+            }
+        }
+	    componentsByClass = newData;
+	}
+	
 }

@@ -76,7 +76,9 @@ public class GroupManager {
 	 */
 	public void removeCompletely( long entity ) {
 		for ( ArrayList<Long> entityList : entitiesByGroup.values() ) {
-			entityList.remove( entityList.indexOf( entity ) );
+		    if ( entityList.contains( entity ) ) {
+		        entityList.remove( entityList.indexOf( entity ) );
+		    }
 		}
 	}
 	
