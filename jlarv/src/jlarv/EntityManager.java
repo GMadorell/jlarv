@@ -206,7 +206,6 @@ public class EntityManager {
 	 * only the entities that have every single component.
 	 * @param componentType The class types of the components we want to process (SomeComponent.class).
 	 */
-	@SafeVarargs // Allows us to use to evade warnings on every method call.
 	public final ArrayList<Long> getEntitiesHavingComponents( Class<? extends Component> ... components ) {
 		ArrayList<Long> entitiesList = getEntitiesHavingComponent( components[0] ); //avoid 1 iteration
 		ArrayList<Long> auxiliarList = new ArrayList<Long>();
@@ -268,6 +267,17 @@ public class EntityManager {
 	}
 	
 	/**
+	 * Disposes all the components of the given type.
+	 */
+	public void disposeComponentsOfType( Class<? extends Component> type ) {
+		if ( ! componentsByClass.containsKey(type)) return;
+		for ( Component component : componentsByClass.get( type ).values() ){
+			component.dispose();
+		}
+		componentsByClass.remove( type );
+	}
+	
+	/**
 	 * Cleans up after we don't need the entity manager anymore.
 	 */
 	public void dispose() {
@@ -286,6 +296,10 @@ public class EntityManager {
 	 */
 	public ArrayList<Long> getEntities() {
 		return entities;
+	}
+	
+	public void setEntities( ArrayList<Long> entities ) {
+		this.entities = entities;
 	}
 
 	public HashMap<Class<? extends Component>, HashMap<Long, Component>> getComponentsByClass() {

@@ -1,5 +1,6 @@
 package jlarv;
 
+import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 /*
@@ -87,6 +88,24 @@ public class Engine {
 	}
 	
 	/**
+	 * Removes all the systems of the given class.
+	 */
+	public void removeSystemsClass( Class<? extends System> type ) {
+		ArrayList<System> toBeDeleted = new ArrayList<System>();
+		for ( System system : systems ) {
+			if ( system.getClass() == type ) {
+				toBeDeleted.add( system );
+			}
+		}
+		
+		for ( System system : toBeDeleted ) {
+			systems.remove( system );
+			system.dispose();
+		}
+	}
+	
+	
+	/**
 	 * Updates every system in priority order.
 	 * @param delta The time elapsed since last update step.
 	 */
@@ -136,5 +155,10 @@ public class Engine {
 		this.entityFactory = entityFactory;
 		this.entityFactory.setEntityManager( entityManager );
 		this.entityFactory.setGroupManager( groupManager );
+	}
+	
+	public void setGroupManager( GroupManager manager ) {
+		manager.setEngine( this );
+		this.groupManager = manager;
 	}
 }
