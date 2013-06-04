@@ -161,4 +161,8 @@ public class Engine {
 		manager.setEngine( this );
 		this.groupManager = manager;
 	}
+	
+	public void setEntityManager( EntityManager manager ) {
+		this.entityManager = manager;
+	}
 }
